@@ -1,0 +1,52 @@
+version: "3"
+
+services:
+
+
+  wordpress:
+    image: wordpress:5.5
+    container_name: wordpress
+    restart: always
+    depends_on:
+      - mysql
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./src:/var/www/html
+    env_file:
+      - .env
+
+
+  mysql:
+    container_name: mysql
+    volumes:
+      - ./docker/mysql/data:/var/lib/mysql
+      - ./docker/mysql/configs/my.cnf:/etc/mysql/my.cnf
+    ports:
+      - 3306:3306
+    image: mysql:5.6
+    restart: always
+    env_file:
+      - .env    
+
+
+  nginx:
+    image: linuxserver/letsencrypt
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./docker/nginx/config:/config
+      - ./docker/nginx/nginx.conf:/config/nginx/site-confs/default
+      - ./docker/nginx/ssl.conf:/config/nginx/ssl.conf
+    container_name: nginx
+    restart: unless-stopped
+    environment: 
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+      - URL=tudominio.com
+      - SUBDOMAINS=www,      
+      - EMAIL=tuemail@gmail.com     
+      - VALIDATION=http
+      - STAGING=false 

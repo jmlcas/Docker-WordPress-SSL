@@ -13,8 +13,11 @@ services:
     tty: true
     volumes:
       - ./src:/var/www/html
-    env_file:
-      - .env
+    env_file: .env
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}   
 
 
   mysql:
@@ -27,8 +30,12 @@ services:
     ports:
       - 3306:3306
     restart: always
-    env_file:
-      - .env    
+    env_file: .env 
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}    
 
 
   nginx:

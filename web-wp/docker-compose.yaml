@@ -54,7 +54,7 @@ services:
       - PGID=1000
       - TZ=Europe/Madrid
       - URL=tudominio.com
-      - SUBDOMAINS=www,      
+#     - SUBDOMAINS=www,      
       - EMAIL=tuemail@gmail.com     
       - VALIDATION=http
       - STAGING=false 

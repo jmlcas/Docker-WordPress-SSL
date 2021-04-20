@@ -53,8 +53,8 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Madrid
-      - URL=tudominio.com
-#     - SUBDOMAINS=www,      
-      - EMAIL=tuemail@gmail.com     
+      - URL=tudominio.com # debe ser un dominio válido 
+#     - SUBDOMAINS=www,   # opcional   
+      - EMAIL=tuemail@gmail.com   # debe ser un email válido  
       - VALIDATION=http
       - STAGING=false 

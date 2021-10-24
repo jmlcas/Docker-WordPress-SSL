@@ -1,6 +1,10 @@
 # Docker-WordPress-SSL
-Wordpress con SSL - Docker-compose
+WordPress + MySQL + phpMyAdmin + Nginx + SSL - CMS - Docker-compose
 
-WordPress + MySQL + phpMyAdmin + Nginx + SSL
+Ver en "localhost"
+
+phpMyAdmin - ver en "localhost:8080"
+
+
 
 

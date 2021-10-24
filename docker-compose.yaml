@@ -1,0 +1,86 @@
+version: "3"
+
+services:
+
+
+  wordpress:
+    image: wordpress:5.8
+    container_name: wordpress
+    expose:
+      - "80"    
+    restart: unless-stopped
+    depends_on:
+      - mysql
+      - nginx-proxy      
+    volumes:
+      - ./src:/var/www/html
+    env_file: .env
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}   
+      VIRTUAL_HOST: tudominio.com        #debe ser un dominio válido y DNS apuntando a este servidor
+      LETSENCRYPT_HOST: tudominio.com    #debe ser un dominio válido y DNS apuntando a este servidor   
+
+  mysql:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password  
+    container_name: mysql
+    volumes:
+      - ./db_data:/var/lib/mysql
+    expose:
+      - "3306"
+    restart: unless-stopped
+    env_file: .env 
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}    
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: wppma 
+    restart: unless-stopped   
+    depends_on:      
+      - mysql
+    ports:      
+      - "8080:80"        
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: ${MYSQL_USER}
+      PMA_PASSWORD: ${MYSQL_PASSWORD} 
+    depends_on:
+      - mysql   
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - certs:/etc/nginx/certs
+      - vhost.d:/etc/nginx/vhost.d
+      - ./html:/usr/share/nginx/html
+      
+  nginx-proxy-letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: nginx-proxy-letsencrypt
+    restart: always
+    depends_on:
+      - nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - certs:/etc/nginx/certs
+      - vhost.d:/etc/nginx/vhost.d
+      - ./html:/usr/share/nginx/html
+    environment:
+      - DEFAULT_EMAIL=admin@gmail.com     #debe ser un email válido
+      - NGINX_PROXY_CONTAINER=nginx-proxy
+
+volumes:
+  certs: {}
+  vhost.d: {}   

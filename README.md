@@ -8,3 +8,8 @@ phpMyAdmin - ver en "localhost:8080"
 
 
 
+
+
+### Infrastructure model
+
+![Infrastructure model](.infragenie/infrastructure_model.png)

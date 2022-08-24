@@ -19,7 +19,7 @@ services:
       WORDPRESS_DB_HOST: mysql
       WORDPRESS_DB_USER: ${MYSQL_USER}
       WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}  
-      WORDPRESS_DB_NAME:${MYSQL_DATABASE}
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
       VIRTUAL_HOST: tudominio.com        #debe ser un dominio válido y DNS apuntando a este servidor
       LETSENCRYPT_HOST: tudominio.com    #debe ser un dominio válido y DNS apuntando a este servidor   
 

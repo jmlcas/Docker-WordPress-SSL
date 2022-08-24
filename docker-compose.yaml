@@ -4,7 +4,7 @@ services:
 
 
   wordpress:
-    image: wordpress:5.9
+    image: wordpress:6.0
     container_name: wordpress
     expose:
       - "80"    

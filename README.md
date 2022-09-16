@@ -13,3 +13,8 @@ Modificar las líneas 23 y 24 de docker-compose.yaml:
 
 
 
+
+
+### Infrastructure model
+
+![Infrastructure model](.infragenie/infrastructure_model.png)

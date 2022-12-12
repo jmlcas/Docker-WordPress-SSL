@@ -68,7 +68,7 @@ services:
       - ./html:/usr/share/nginx/html
       
   nginx-proxy-letsencrypt:
-    image: jrcs/letsencrypt-nginx-proxy-companion
+    image: nginxproxy/acme-companion
     container_name: nginx-proxy-letsencrypt
     restart: always
     depends_on:

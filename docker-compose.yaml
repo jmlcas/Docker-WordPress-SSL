@@ -10,8 +10,7 @@ services:
       - "80"    
     restart: unless-stopped
     depends_on:
-      - mysql
- 
+      - mysql 
     volumes:
       - ./wordpress:/var/www/html
     env_file: .env

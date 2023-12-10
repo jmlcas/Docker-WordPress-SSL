@@ -11,7 +11,7 @@ services:
     restart: unless-stopped
     depends_on:
       - mysql
-#      - nginx-proxy      
+ 
     volumes:
       - ./wordpress:/var/www/html
     env_file: .env
@@ -20,12 +20,11 @@ services:
       WORDPRESS_DB_USER: ${MYSQL_USER}
       WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}  
       WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
-      VIRTUAL_HOST: tudominio.com        #debe ser un dominio válido y DNS apuntando a este servidor
-      LETSENCRYPT_HOST: tudominio.com    #debe ser un dominio válido y DNS apuntando a este servidor   
+#      VIRTUAL_HOST: tudominio.com        #debe ser un dominio válido y DNS apuntando a este servidor
+#      LETSENCRYPT_HOST: tudominio.com    #debe ser un dominio válido y DNS apuntando a este servidor   
 
   mysql:
-    image: mysql:8.2.0
-    command: --default-authentication-plugin=mysql_native_password  
+    image: mariadb
     container_name: mysql
     volumes:
       - ./db_data:/var/lib/mysql

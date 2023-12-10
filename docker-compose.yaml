@@ -11,6 +11,7 @@ services:
     restart: unless-stopped
     depends_on:
       - mysql 
+      - nginx-proxy      
     volumes:
       - ./wordpress:/var/www/html
     env_file: .env
@@ -49,25 +50,40 @@ services:
       PMA_HOST: mysql
       PMA_USER: ${MYSQL_USER}
       PMA_PASSWORD: ${MYSQL_PASSWORD} 
-
+      
   nginx-proxy:
-    image: nginx:1.15.12-alpine
+    image: jwilder/nginx-proxy
     container_name: nginx-proxy
+    restart: always
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ./wordpress:/var/www/html
-      - ./nginx-conf:/etc/nginx/conf.d      
       - /var/run/docker.sock:/tmp/docker.sock:ro
+      - certs:/etc/nginx/certs
+      - vhost.d:/etc/nginx/vhost.d
+      - ./html:/usr/share/nginx/html
+      
+  nginx-proxy-letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: nginx-proxy-letsencrypt
+    restart: always
     depends_on:
-      - wordpress
-    restart: unless-stopped    
+      - nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - certs:/etc/nginx/certs
+      - vhost.d:/etc/nginx/vhost.d
+      - ./html:/usr/share/nginx/html
+    environment:
+      - DEFAULT_EMAIL=admin@gmail.com     #debe ser un email válido
+      - NGINX_PROXY_CONTAINER=nginx-proxy
+
+volumes:
+  certs: {}
+  vhost.d: {}    
   
       
-
-
-
-      
+ 
 
  

@@ -53,16 +53,12 @@ services:
       PMA_PASSWORD: ${MYSQL_PASSWORD} 
 
   nginx-proxy:
-    image: nginxproxy/nginx-proxy       # nginx:1.15.12-alpine
+    image: nginx:1.15.12-alpine
     container_name: nginx-proxy
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - conf:/etc/nginx/conf.d
-      - vhost:/etc/nginx/vhost.d
-      - html:/usr/share/nginx/html
-      - certs:/etc/nginx/certs:ro
       - ./wordpress:/var/www/html
       - ./nginx-conf:/etc/nginx/conf.d      
       - /var/run/docker.sock:/tmp/docker.sock:ro
@@ -71,24 +67,7 @@ services:
     restart: unless-stopped    
   
       
-  acme-companion:
-    image: nginxproxy/acme-companion
-    container_name: nginx-proxy-acme
-    environment:
-      - DEFAULT_EMAIL=mail@yourdomain.tld
-    volumes_from:
-      - nginx-proxy
-    volumes:
-      - certs:/etc/nginx/certs:rw
-      - acme:/etc/acme.sh
-      - /var/run/docker.sock:/var/run/docker.sock:ro
 
-volumes:
-  conf:
-  vhost:
-  html:
-  certs:
-  acme:
 
 
       

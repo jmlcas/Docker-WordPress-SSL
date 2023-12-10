@@ -13,7 +13,7 @@ services:
       - mysql
 #      - nginx-proxy      
     volumes:
-      - ./src:/var/www/html
+      - ./wordpress:/var/www/html
     env_file: .env
     environment:
       WORDPRESS_DB_HOST: mysql
@@ -53,7 +53,7 @@ services:
       PMA_PASSWORD: ${MYSQL_PASSWORD} 
 
   nginx-proxy:
-    image: nginxproxy/nginx-proxy
+    image: nginxproxy/nginx-proxy       # nginx:1.15.12-alpine
     container_name: nginx-proxy
     ports:
       - "80:80"
@@ -63,7 +63,13 @@ services:
       - vhost:/etc/nginx/vhost.d
       - html:/usr/share/nginx/html
       - certs:/etc/nginx/certs:ro
+      - wordpress:/var/www/html
+      - ./nginx-conf:/etc/nginx/conf.d      
       - /var/run/docker.sock:/tmp/docker.sock:ro
+    depends_on:
+      - wordpress
+    restart: unless-stopped    
+  
       
   acme-companion:
     image: nginxproxy/acme-companion

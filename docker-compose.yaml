@@ -11,7 +11,7 @@ services:
     restart: unless-stopped
     depends_on:
       - mysql
-      - nginx-proxy      
+#      - nginx-proxy      
     volumes:
       - ./src:/var/www/html
     env_file: .env
@@ -53,33 +53,38 @@ services:
       PMA_PASSWORD: ${MYSQL_PASSWORD} 
 
   nginx-proxy:
-    image: jwilder/nginx-proxy
+    image: nginxproxy/nginx-proxy
     container_name: nginx-proxy
-    restart: always
     ports:
       - "80:80"
       - "443:443"
     volumes:
+      - conf:/etc/nginx/conf.d
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - certs:/etc/nginx/certs:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - certs:/etc/nginx/certs
-      - vhost.d:/etc/nginx/vhost.d
-      - ./html:/usr/share/nginx/html
       
-  nginx-proxy-letsencrypt:
+  acme-companion:
     image: nginxproxy/acme-companion
-    container_name: nginx-proxy-letsencrypt
-    restart: always
-    depends_on:
+    container_name: nginx-proxy-acme
+    environment:
+      - DEFAULT_EMAIL=mail@yourdomain.tld
+    volumes_from:
       - nginx-proxy
     volumes:
+      - certs:/etc/nginx/certs:rw
+      - acme:/etc/acme.sh
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - certs:/etc/nginx/certs
-      - vhost.d:/etc/nginx/vhost.d
-      - ./html:/usr/share/nginx/html
-    environment:
-      - DEFAULT_EMAIL=admin@gmail.com     #debe ser un email válido
-      - NGINX_PROXY_CONTAINER=nginx-proxy
 
 volumes:
-  certs: {}
-  vhost.d: {}   
+  conf:
+  vhost:
+  html:
+  certs:
+  acme:
+
+
+      
+
+ 

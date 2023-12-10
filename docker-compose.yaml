@@ -4,7 +4,7 @@ services:
 
 
   wordpress:
-    image: wordpress:6.0
+    image: wordpress:6.4.2
     container_name: wordpress
     expose:
       - "80"    
@@ -24,7 +24,7 @@ services:
       LETSENCRYPT_HOST: tudominio.com    #debe ser un dominio válido y DNS apuntando a este servidor   
 
   mysql:
-    image: mysql:8.0
+    image: mysql:8.2.0
     command: --default-authentication-plugin=mysql_native_password  
     container_name: mysql
     volumes:
@@ -40,7 +40,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}    
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin
+    image: phpmyadmin:5.2.1
     container_name: wppma 
     restart: unless-stopped   
     depends_on:      

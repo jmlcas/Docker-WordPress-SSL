@@ -51,8 +51,6 @@ services:
       PMA_HOST: mysql
       PMA_USER: ${MYSQL_USER}
       PMA_PASSWORD: ${MYSQL_PASSWORD} 
-    depends_on:
-      - mysql   
 
   nginx-proxy:
     image: jwilder/nginx-proxy

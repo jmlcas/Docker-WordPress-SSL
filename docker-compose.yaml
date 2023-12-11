@@ -4,7 +4,7 @@ services:
 
 
   wordpress:
-    image: wordpress:latest        # wordpress:6.4.2-php8.3-fpm-alpine
+    image: wordpress:latest       
     container_name: wordpress
     expose:
       - "80"    

@@ -4,7 +4,7 @@ services:
 
 
   wordpress:
-    image: wordpress:6.4.2
+    image: wordpress:latest
     container_name: wordpress
     expose:
       - "80"    
@@ -24,7 +24,7 @@ services:
       LETSENCRYPT_HOST: tudominio.com    #debe ser un dominio válido y DNS apuntando a este servidor   
 
   mysql:
-    image: mariadb
+    image: mariadb:latest
     container_name: mysql
     volumes:
       - ./db_data:/var/lib/mysql
@@ -39,7 +39,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}    
 
   phpmyadmin:
-    image: phpmyadmin:5.2.1
+    image: phpmyadmin:latest
     container_name: wppma 
     restart: unless-stopped   
     depends_on:      
@@ -52,7 +52,7 @@ services:
       PMA_PASSWORD: ${MYSQL_PASSWORD} 
       
   nginx-proxy:
-    image: jwilder/nginx-proxy
+    image: jwilder/nginx-proxy:latest
     container_name: nginx-proxy
     restart: always
     ports:
@@ -65,7 +65,7 @@ services:
       - ./html:/usr/share/nginx/html
       
   nginx-proxy-letsencrypt:
-    image: jrcs/letsencrypt-nginx-proxy-companion
+    image: jrcs/letsencrypt-nginx-proxy-companion:latest
     container_name: nginx-proxy-letsencrypt
     restart: always
     depends_on:

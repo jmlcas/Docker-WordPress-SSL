@@ -4,7 +4,7 @@ services:
 
 
   wordpress:
-    image: wordpress:latest        # urre/wordpress-nginx-docker-compose-image:1.4.0
+    image: wordpress:latest        # wordpress:6.4.2-php8.3-fpm-alpine
     container_name: wordpress
     expose:
       - "80"    
